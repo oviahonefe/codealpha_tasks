@@ -1,0 +1,387 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;1,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #17140F;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    color: #EFE9DF;
+}
+
+.player {
+    width: 350px;
+    padding: 28px;
+    background: #2A2621;
+    border: 1px solid #443F37;
+    position: relative;
+}
+
+/* corner hardware screws — a quiet nod to physical equipment casing */
+.player::before,
+.player::after,
+.player .screw-tl,
+.player .screw-tr {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #443F37;
+    border: 1px solid #5A5349;
+}
+.player::before { top: 10px; left: 10px; }
+.player::after { bottom: 10px; right: 10px; }
+.player .screw-tl { top: 10px; right: 10px; }
+.player .screw-tr { bottom: 10px; left: 10px; }
+
+.album-art {
+    width: 100%;
+    height: 280px;
+    margin-bottom: 22px;
+    padding: 5px;
+    background: #17140F;
+    border: 1px solid #443F37;
+    position: relative;
+}
+
+.album-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) contrast(1.02) sepia(0.08);
+}
+
+
+.error-msg {
+    font-size: 12px;
+    color: #C97B63;
+    margin-bottom: 14px;
+    padding: 8px 10px;
+    border: 1px solid #4A342C;
+    background: #2E2119;
+}
+
+.song-info {
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #3A362F;
+}
+
+.song-info h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 1.3;
+    color: #F4EFE6;
+    margin-bottom: 4px;
+}
+
+.song-info p {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: #8F887C;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.progress-container span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #7A7367;
+    min-width: 30px;
+}
+
+#progressBar {
+    flex: 1;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.controls button {
+    border: 1px solid transparent;
+    background: transparent;
+    color: #83796B;
+    cursor: pointer;
+    padding: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.controls button:hover {
+    color: #EFE9DF;
+}
+
+.controls button svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+#playBtn {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: 1px solid #6F9C88;
+    color: #6F9C88;
+    padding: 0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+#playBtn svg {
+    width: 15px;
+    height: 15px;
+}
+
+#playBtn:hover {
+    background: #6F9C88;
+    color: #17140F;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border-top: 1px solid #3A362F;
+}
+
+#volumeBar {
+    flex: 1;
+}
+
+/* Shuffle + repeat: same square hardware-toggle shape, distinct states */
+#shuffleBtn,
+#repeatBtn {
+    position: relative;
+    color: #83796B;
+    width: 26px;
+    height: 26px;
+    border: 1px solid transparent;
+}
+
+#shuffleBtn.active {
+    color: #6F9C88;
+    border: 1px solid #6F9C88;
+}
+
+#repeatBtn[data-mode="all"] {
+    color: #6F9C88;
+    border: 1px solid #6F9C88;
+}
+
+#repeatBtn[data-mode="one"] {
+    background: #6F9C88;
+    border-color: #6F9C88;
+    color: #17140F;
+}
+
+#repeatBtn[data-mode="one"]::after {
+    content: "1";
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #17140F;
+    border: 1px solid #6F9C88;
+    color: #6F9C88;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    line-height: 10px;
+    text-align: center;
+}
+
+#volumeIcon {
+    cursor: pointer;
+    line-height: 1;
+    display: inline-flex;
+    color: #83796B;
+}
+
+/* Accessible keyboard focus — visible, not decorative */
+button:focus-visible,
+input[type="range"]:focus-visible,
+.playlist-item:focus-visible {
+    outline: 1px solid #6F9C88;
+    outline-offset: 3px;
+}
+
+/* Range inputs: thin line, rectangular "tape marker" thumb */
+input[type="range"] {
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 2px;
+    background: #3A362F;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: linear-gradient(to right, #6F9C88 var(--fill, 0%), #3A362F var(--fill, 0%));
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 3px;
+    height: 12px;
+    background: #6F9C88;
+    margin-top: -5px;
+    border: none;
+}
+
+input[type="range"]::-moz-range-track {
+    height: 2px;
+    background: #3A362F;
+}
+
+input[type="range"]::-moz-range-progress {
+    height: 2px;
+    background: #6F9C88;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 3px;
+    height: 12px;
+    background: #6F9C88;
+    border: none;
+}
+
+/* Playlist header + sort control */
+.playlist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.playlist-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #7A7367;
+}
+
+#sortSelect {
+    background: #17140F;
+    color: #A79E90;
+    border: 1px solid #443F37;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 11px;
+    padding: 4px 6px;
+    cursor: pointer;
+}
+
+#sortSelect:focus-visible {
+    outline: 1px solid #6F9C88;
+    outline-offset: 2px;
+}
+
+/* Playlist */
+.playlist {
+    list-style: none;
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+.playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid #3A362F;
+    cursor: pointer;
+    color: #A79E90;
+    font-size: 13px;
+}
+
+.playlist-item:last-child {
+    border-bottom: none;
+}
+
+.playlist-item:hover {
+    color: #EFE9DF;
+}
+
+.playlist-item img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #443F37;
+}
+
+.playlist-item .pl-meta {
+    min-width: 0;
+}
+
+.playlist-item .pl-title {
+    display: block;
+    color: #EFE9DF;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.playlist-item .pl-artist {
+    display: block;
+    font-size: 11px;
+    color: #7A7367;
+}
+
+.playlist-item.active {
+    color: #6F9C88;
+}
+
+.playlist-item.active .pl-title {
+    color: #6F9C88;
+}
+
+.playlist::-webkit-scrollbar {
+    width: 6px;
+}
+.playlist::-webkit-scrollbar-thumb {
+    background: #443F37;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+@media (max-width: 400px) {
+    .player {
+        width: 92vw;
+        padding: 22px;
+    }
+}

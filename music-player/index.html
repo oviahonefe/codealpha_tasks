@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A minimal hi-fi styled music player">
+    <meta property="og:title" content="Music Player">
+    <meta property="og:description" content="A minimal hi-fi styled music player">
+
+    <title>Music Player</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><circle cx=%2212%22 cy=%2212%22 r=%2210%22 fill=%22%236F9C88%22/></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="player">
+        <span class="screw-tl"></span>
+        <span class="screw-tr"></span>
+
+        <div class="album-art">
+            <img src="" alt="Album artwork" id="albumArt">
+            <div class="art-overlay" id="artOverlay" hidden>
+                <span class="spinner" aria-hidden="true"></span>
+            </div>
+        </div>
+
+        <div class="song-info">
+            <h1 id="songTitle">Song Title</h1>
+            <p id="artistName">Artist Name</p>
+        </div>
+
+        <p id="errorMsg" class="error-msg" role="alert" hidden></p>
+
+        <div class="progress-container">
+            <span id="currentTime">0:00</span>
+
+            <input
+                type="range"
+                id="progressBar"
+                min="0"
+                value="0"
+                aria-label="Seek"
+            >
+
+            <span id="duration">0:00</span>
+        </div>
+
+        <div class="controls">
+
+            <button id="shuffleBtn" aria-label="Shuffle off" title="Shuffle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 3 21 3 21 8"></polyline>
+                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                    <polyline points="21 16 21 21 16 21"></polyline>
+                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                </svg>
+            </button>
+
+            <button id="prevBtn" aria-label="Previous song" title="Previous">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 6h2v12H6zM20 6v12l-8.5-6z"></path>
+                </svg>
+            </button>
+
+            <button id="playBtn" aria-label="Play" title="Play">
+                <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"></path>
+                </svg>
+            </button>
+
+            <button id="nextBtn" aria-label="Next song" title="Next">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 6h2v12h-2zM4 6v12l8.5-6z"></path>
+                </svg>
+            </button>
+
+            <button id="repeatBtn" aria-label="Repeat off" title="Repeat" data-mode="off">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg>
+            </button>
+
+        </div>
+
+        <div class="volume-container">
+
+            <span id="volumeIcon" role="button" tabindex="0" aria-label="Mute">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M3 9v6h4l5 5V4L7 9H3z"></path>
+                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.74 2.5-2.26 2.5-4.03z"></path>
+                </svg>
+            </span>
+
+            <input
+                type="range"
+                id="volumeBar"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+                aria-label="Volume"
+            >
+
+        </div>
+
+        <div class="playlist-header">
+            <span class="playlist-label">Playlist</span>
+            <label class="visually-hidden" for="sortSelect">Sort playlist</label>
+            <select id="sortSelect">
+                <option value="default">Default order</option>
+                <option value="alpha">A–Z</option>
+                <option value="newest">Newest first</option>
+                <option value="mostPlayed">Most played</option>
+            </select>
+        </div>
+
+        <ol class="playlist" id="playlist" aria-label="Playlist"></ol>
+
+        <audio id="audioPlayer" preload="metadata"></audio>
+
+        <div id="liveRegion" class="visually-hidden" aria-live="polite"></div>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
